@@ -21,7 +21,7 @@
         },
         data() {
             return {
-                image: require(`../assets/img/${this.imageName}`)
+                image: require(`../../assets/img/${this.imageName}`)
             }
         }
     }

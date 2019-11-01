@@ -11,10 +11,10 @@
 <script>
     import jquery from "jquery/dist/jquery.min";
     import bootstrapJs from "bootstrap/dist/js/bootstrap.bundle";
-    import Navigator from "./components/Navigator";
-    import Header from "./components/Header";
-    import Footer from "./components/Footer";
-    import ViewAllBiddingItems from "./components/ViewAllBiddingItems";
+    import Navigator from "./components/fragment/Navigator";
+    import Header from "./components/fragment/Header";
+    import Footer from "./components/fragment/Footer";
+    import ViewAllBiddingItems from "./components/fragment/ViewAllBiddingItems";
 
     export default {
         name: 'app',
