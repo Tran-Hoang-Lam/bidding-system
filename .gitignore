@@ -19,3 +19,8 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw?
+
+build
+.gradle
+out
+src/main/resources/static**
