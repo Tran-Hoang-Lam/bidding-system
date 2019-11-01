@@ -7,7 +7,7 @@ module.exports = {
         .tap(options => Object.assign(options, {limit: Infinity}))
   },
   assetsDir: 'assets',
-  outputDir: './src/main/resources',
+  outputDir: './src/main/resources/static',
   configureWebpack: {
     entry: {
       app: './src/main/vue/main.js'
