@@ -29,7 +29,7 @@
                             </a>
                         </li>
                     </ul>
-                    <p class="copyright text-muted">Copyright &copy; Ask for Help 2019</p>
+                    <p class="copyright text-muted">Copyright &copy; Bidding System 2019</p>
                 </div>
             </div>
         </div>
