@@ -55,7 +55,6 @@
                 name: '',
                 description: '',
                 initialPrice: 10000,
-                currentBidPrice: 0,
                 state: 'NEW'
             }
         },
@@ -79,14 +78,13 @@
                     name: this.name,
                     description: this.description,
                     initialPrice: this.initialPrice,
-                    currentBidPrice: this.currentBidPrice,
+                    currentBidPrice: this.initialPrice,
                     state: this.state
                 }).then(function () {
                     self.id = '';
                     self.name = '';
                     self.description = '';
                     self.initialPrice = 10000;
-                    self.currentBidPrice = 0;
                     self.state = 'NEW';
                 })
             }
