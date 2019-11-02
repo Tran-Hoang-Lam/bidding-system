@@ -42,4 +42,9 @@ public class LoggingAspect {
     public void loggingAfterExecuteBidderController(JoinPoint joinPoint) {
         log.info("Finish execute method " + joinPoint.toString() + " in BidderController");
     }
+
+    @Before("execution(* info.lamth.biddingsystem.repository.BiddingItemRepository.save(..))")
+    public void loggingBeforeSaveDatabase(JoinPoint joinPoint) {
+        log.info("Saving " + Arrays.toString(joinPoint.getArgs()) + " to database");
+    }
 }

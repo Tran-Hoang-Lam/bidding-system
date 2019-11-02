@@ -2,23 +2,23 @@ package info.lamth.biddingsystem.service;
 
 import info.lamth.biddingsystem.constant.BidState;
 import info.lamth.biddingsystem.model.BiddingItem;
-import info.lamth.biddingsystem.repository.BiddingItemRepository;
+import info.lamth.biddingsystem.queue.BiddingQueue;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Service("biddingService")
 public class BiddingServiceImpl implements BiddingService {
-    private final BiddingItemRepository biddingItemRepository;
+    private final BiddingQueue biddingQueue;
 
-    public BiddingServiceImpl(BiddingItemRepository biddingItemRepository) {
-        this.biddingItemRepository = biddingItemRepository;
+    public BiddingServiceImpl(BiddingQueue biddingQueue) {
+        this.biddingQueue = biddingQueue;
     }
 
     @Override
     public Mono<BiddingItem> createBiddingItem(BiddingItem biddingItem) {
-        BiddingItem savedItem = biddingItemRepository.save(biddingItem);
-        return Mono.just(savedItem);
+        biddingQueue.queueBiddingItem(biddingItem);
+        return Mono.just(biddingItem);
     }
 
     @Override
@@ -30,7 +30,7 @@ public class BiddingServiceImpl implements BiddingService {
 
         currentItem.setCurrentBidPrice(price);
         currentItem.setState(BidState.BIDDING.name());
-        biddingItemRepository.save(currentItem);
+        biddingQueue.queueBiddingItem(currentItem);
         return Mono.just(currentItem);
     }
 
@@ -38,7 +38,8 @@ public class BiddingServiceImpl implements BiddingService {
     public Mono<BiddingItem> updateItemState(String id, BidState newState) {
         BiddingItem currentItem = getBiddingItem(id);
         currentItem.setState(newState.name());
-        return Mono.just(biddingItemRepository.save(currentItem));
+        biddingQueue.queueBiddingItem(currentItem);
+        return Mono.just(currentItem);
     }
 
     @Override
@@ -49,15 +50,16 @@ public class BiddingServiceImpl implements BiddingService {
         }
 
         currentItem.setInitialPrice(newPrice);
-        return Mono.just(biddingItemRepository.save(currentItem));
+        biddingQueue.queueBiddingItem(currentItem);
+        return Mono.just(currentItem);
     }
 
     @Override
     public Flux<BiddingItem> getAllCurrentBiddingItems() {
-        return Flux.fromIterable(biddingItemRepository.findAll());
+        return Flux.fromIterable(biddingQueue.getAll());
     }
 
     private BiddingItem getBiddingItem(String id) {
-        return biddingItemRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Item ID not exist"));
+        return biddingQueue.getItemById(id);
     }
 }

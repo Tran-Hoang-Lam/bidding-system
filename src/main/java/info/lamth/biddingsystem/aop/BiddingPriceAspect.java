@@ -24,7 +24,7 @@ public class BiddingPriceAspect {
             " || execution(* info.lamth.biddingsystem.service.BiddingServiceImpl.createBiddingItem(..))", returning = "newItem")
     public void fireNewBiddingEvent(Mono<BiddingItem> newItem) {
         newItem.subscribe(item -> {
-            log.info("Fire item " + item.getName());
+            log.info("Send item " + item.getName() + " to stream");
             newBiddingPrice.send(MessageBuilder.withPayload(
                     BiddingItemPriceEvent.builder()
                             .id(item.getId())

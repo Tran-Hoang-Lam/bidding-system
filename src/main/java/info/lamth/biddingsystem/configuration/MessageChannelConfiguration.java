@@ -8,12 +8,20 @@ import org.springframework.integration.dsl.MessageChannels;
 import org.springframework.messaging.SubscribableChannel;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+
 @Configuration
 public class MessageChannelConfiguration {
     private static final String TASK_EXECUTOR = "task-executor";
 
+    @Bean
+    Executor executor() {
+        return Executors.newSingleThreadExecutor();
+    }
+
     @Bean(name = TASK_EXECUTOR)
-    public TaskExecutor getTaskExecutor() {
+    public TaskExecutor taskExecutor() {
         ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
         taskExecutor.setThreadNamePrefix("Pub-Sub-");
         taskExecutor.setCorePoolSize(2);
