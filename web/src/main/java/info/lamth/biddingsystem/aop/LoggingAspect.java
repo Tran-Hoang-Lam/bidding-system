@@ -3,6 +3,7 @@ package info.lamth.biddingsystem.aop;
 import lombok.extern.log4j.Log4j2;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
+import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.springframework.stereotype.Component;
@@ -46,5 +47,10 @@ public class LoggingAspect {
     @Before("execution(* info.lamth.biddingsystem.repository.BiddingItemRepository.save(..))")
     public void loggingBeforeSaveDatabase(JoinPoint joinPoint) {
         log.info("Saving " + Arrays.toString(joinPoint.getArgs()) + " to database");
+    }
+
+    @AfterThrowing(value = "execution(* info.lamth.biddingsystem.service.*.*(..))", throwing = "ex")
+    public void loggingError(Exception ex) {
+        log.error(ex);
     }
 }
