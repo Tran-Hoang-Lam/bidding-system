@@ -23,4 +23,4 @@ yarn-error.log*
 build
 .gradle
 out
-src/main/resources/static**
+web/src/main/resources/static**

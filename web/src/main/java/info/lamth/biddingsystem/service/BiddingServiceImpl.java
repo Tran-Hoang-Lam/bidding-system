@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.Optional;
+
 @Service("biddingService")
 public class BiddingServiceImpl implements BiddingService {
     private final BiddingQueue biddingQueue;
@@ -60,6 +62,7 @@ public class BiddingServiceImpl implements BiddingService {
     }
 
     private BiddingItem getBiddingItem(String id) {
-        return biddingQueue.getItemById(id);
+        return Optional.ofNullable(biddingQueue.getItemById(id))
+                .orElseThrow(() -> new IllegalArgumentException("Id " + id + " not exist"));
     }
 }
