@@ -24,13 +24,14 @@ public class BiddingPriceAspect {
             " || execution(* info.lamth.biddingsystem.service.BiddingServiceImpl.createBiddingItem(..))", returning = "newItem")
     public void fireNewBiddingEvent(Mono<BiddingItem> newItem) {
         newItem.subscribe(item -> {
-            log.info("Fire new item " + item.getName());
+            log.info("Fire item " + item.getName());
             newBiddingPrice.send(MessageBuilder.withPayload(
                     BiddingItemPriceEvent.builder()
                             .id(item.getId())
                             .name(item.getName())
                             .description(item.getDescription())
-                            .price(item.getCurrentBidPrice())
+                            .currentBidPrice(item.getCurrentBidPrice())
+                            .initialPrice(item.getInitialPrice())
                             .build()
             ).build());
         });

@@ -34,8 +34,6 @@ dependencies {
 	testImplementation 'org.springframework.integration:spring-integration-test'
 }
 
-build.dependsOn(yarn_build)
-
 test {
 	useJUnitPlatform()
 }

@@ -29,6 +29,7 @@ public class BiddingServiceImpl implements BiddingService {
         }
 
         currentItem.setCurrentBidPrice(price);
+        currentItem.setState(BidState.BIDDING.name());
         biddingItemRepository.save(currentItem);
         return Mono.just(currentItem);
     }

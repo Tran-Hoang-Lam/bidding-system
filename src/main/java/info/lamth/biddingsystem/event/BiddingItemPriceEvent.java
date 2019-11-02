@@ -9,5 +9,6 @@ public class BiddingItemPriceEvent {
     private String id;
     private String name;
     private String description;
-    private Long price;
+    private Long initialPrice;
+    private Long currentBidPrice;
 }
