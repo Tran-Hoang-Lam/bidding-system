@@ -12,7 +12,7 @@ dependencies {
     testCompile "io.gatling.highcharts:gatling-charts-highcharts:2.3.1"
 }
 
-task loadTest(type: JavaExec) {
+task runSimulationTest(type: JavaExec) {
     dependsOn testClasses
     description = "load test with Gatling"
     group = "Load Test"

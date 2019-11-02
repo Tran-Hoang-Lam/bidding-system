@@ -17,7 +17,7 @@ object Bidding {
 
   def bid(id: String): ChainBuilder = {
     feed(feeder(id))
-      .exec(http("Bid item").post("/bidding-item/bid?id=${id}&price=${bidPrice}"))
+      .exec(http(s"Bid ${id}").post("/bidding-item/bid?id=${id}&price=${bidPrice}"))
       .pause(1)
   }
 }
