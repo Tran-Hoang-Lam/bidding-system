@@ -9,6 +9,6 @@ public interface BiddingService {
     Mono<BiddingItem> createBiddingItem(BiddingItem biddingItem);
     Mono<BiddingItem> bidPrice (String id, Long price);
     Mono<BiddingItem> updateItemState(String id, BidState newState);
-    Mono<BiddingItem> updateInitialPrice (String id, Long newPrice);
+    Mono<BiddingItem> updateBiddingPrice(String id, Long newPrice);
     Flux<BiddingItem> getAllCurrentBiddingItems();
 }

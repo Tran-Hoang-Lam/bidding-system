@@ -45,13 +45,13 @@ public class BiddingServiceImpl implements BiddingService {
     }
 
     @Override
-    public Mono<BiddingItem> updateInitialPrice(String id, Long newPrice) {
+    public Mono<BiddingItem> updateBiddingPrice(String id, Long newPrice) {
         BiddingItem currentItem = getBiddingItem(id);
         if (!currentItem.getState().equals(BidState.NEW.name()) || currentItem.getState().equals(BidState.PAUSE.name())) {
-            throw new IllegalArgumentException("Current state " + currentItem.getState() + " not allow to update initial price");
+            throw new IllegalArgumentException("Current state " + currentItem.getState() + " not allow to update price");
         }
 
-        currentItem.setInitialPrice(newPrice);
+        currentItem.setCurrentBidPrice(newPrice);
         biddingQueue.queueBiddingItem(currentItem);
         return Mono.just(currentItem);
     }

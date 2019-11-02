@@ -21,9 +21,9 @@ public class AuctioneerController {
     }
 
     @PatchMapping("price")
-    public Mono<BiddingItem> updateInitialPrice(@RequestParam("id") String itemId,
+    public Mono<BiddingItem> updateBiddingPrice(@RequestParam("id") String itemId,
                                                 @RequestParam("price") Long price) {
-        return biddingService.updateInitialPrice(itemId, price);
+        return biddingService.updateBiddingPrice(itemId, price);
     }
 
     @PatchMapping("state")
