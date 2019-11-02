@@ -1,3 +1,4 @@
 rootProject.name = 'biddingsystem'
 include 'web'
+include 'gatling-test'
 
