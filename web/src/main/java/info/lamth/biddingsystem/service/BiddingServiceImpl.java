@@ -37,7 +37,7 @@ public class BiddingServiceImpl implements BiddingService {
     }
 
     @Override
-    public Mono<BiddingItem> updateItemState(String id, BidState newState) {
+    public Mono<BiddingItem> resetItemState(String id, BidState newState) {
         BiddingItem currentItem = getBiddingItem(id);
         currentItem.setState(newState.name());
         biddingQueue.queueBiddingItem(currentItem);

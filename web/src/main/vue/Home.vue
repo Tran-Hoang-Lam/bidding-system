@@ -3,6 +3,7 @@
         <Navigator/>
         <Header image-name="home-bg.jpg"/>
         <ViewAllBiddingItems/>
+        <hr/>
         <router-view/>
         <Footer/>
     </div>

@@ -2,6 +2,7 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-md-10 mx-auto">
+                <h2 class="post-title">Add new item</h2>
                 <form id="biddingItem" novalidate>
                     <div class="control-group">
                         <div class="form-group floating-label-form-group controls">
@@ -39,6 +40,45 @@
                     </div>
                 </form>
                 <hr>
+                <h2 class="post-title">Reset item state</h2>
+                <form id="resetItemState" novalidate>
+                    <div class="control-group">
+                        <div class="form-group floating-label-form-group controls">
+                            <label>ID</label>
+                            <input type="text" v-model="resetItemId" class="form-control" placeholder="ID" id="reset-item-id" required
+                                   data-validation-required-message="Please enter ID.">
+                            <p class="help-block text-danger"></p>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="form-group">
+                        <button class="btn btn-primary" id="resetItemSubmitButton" @click.prevent="resetItem">Reset</button>
+                    </div>
+                </form>
+                <hr/>
+                <h2 class="post-title">Change Bid Price</h2>
+                <form id="changeItemPrice" novalidate>
+                    <div class="control-group">
+                        <div class="form-group floating-label-form-group controls">
+                            <label>ID</label>
+                            <input type="text" v-model="changeBidPriceItemId" class="form-control" placeholder="ID" id="change-bid-item-id" required
+                                   data-validation-required-message="Please enter ID.">
+                            <p class="help-block text-danger"></p>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <div class="form-group floating-label-form-group controls">
+                            <label>New Bid Price</label>
+                            <input type="text" v-model="changeBidPriceItemCurrentPrice" class="form-control" placeholder="ID" id="change-bid-item-price" required
+                                   data-validation-required-message="Please enter Price.">
+                            <p class="help-block text-danger"></p>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="form-group">
+                        <button class="btn btn-primary" id="changeItemPriceSubmitButton" @click.prevent="changeBidPrice">Change</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -55,7 +95,10 @@
                 name: '',
                 description: '',
                 initialPrice: 10000,
-                state: 'NEW'
+                state: 'NEW',
+                resetItemId: '',
+                changeBidPriceItemId: '',
+                changeBidPriceItemCurrentPrice: 10000
             }
         },
         methods: {
@@ -86,6 +129,41 @@
                     self.description = '';
                     self.initialPrice = 10000;
                     self.state = 'NEW';
+                }).catch(function (error) {
+                    alert(error.response.data.message);
+                })
+            },
+            resetItem() {
+                if (this.resetItemId === '') {
+                    alert('Please input id');
+                    return;
+                }
+                let self = this;
+                axios.patch('/api/v1/bidding-item/reset', null, {
+                    params: {id: self.resetItemId}
+                }).then(function () {
+                    self.resetItemId = ''
+                }).catch(function (error) {
+                    alert(error.response.data.message);
+                })
+            },
+            changeBidPrice() {
+                if (this.changeBidPriceItemId === '') {
+                    alert('Please input id');
+                    return;
+                }
+                if (this.changeBidPriceItemCurrentPrice === '' || this.changeBidPriceItemCurrentPrice < 0) {
+                    alert('Price too low!!');
+                    return;
+                }
+                let self = this;
+                axios.patch('/api/v1/bidding-item/price', null, {
+                    params: {id: self.changeBidPriceItemId, price: self.changeBidPriceItemCurrentPrice}
+                }).then(function () {
+                    self.changeBidPriceItemId = '';
+                    self.changeBidPriceItemCurrentPrice = 10000;
+                }).catch(function (error) {
+                    alert(error.response.data.message);
                 })
             }
         }

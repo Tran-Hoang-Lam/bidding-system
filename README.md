@@ -9,7 +9,8 @@ There is 2 sub project
 Provide 2 view for Bidder and Auctioneer
 * Both bidder and auctioneer can view item price in realtime
 * Auctioneer can create new item, it will automatically show on the view
-* Auctioneer can change the price of item that not in state BIDDING (currently only api, no screen for it yet)
+* Auctioneer can change the price of item that not in state BIDDING
+* Auctioneer can reset state of selected item to NEW (mean ready to bid)
 * Bidder can bid a new price for selected item, but cannot bid a price lower than current price
 
 ## Gatling test Functionality

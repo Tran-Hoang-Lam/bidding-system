@@ -26,9 +26,8 @@ public class AuctioneerController {
         return biddingService.updateBiddingPrice(itemId, price);
     }
 
-    @PatchMapping("state")
-    public Mono<BiddingItem> updateBiddingState(@RequestParam("id") String itemId,
-                                                @RequestParam("state") String state) {
-        return biddingService.updateItemState(itemId, BidState.valueOf(state));
+    @PatchMapping("reset")
+    public Mono<BiddingItem> updateBiddingState(@RequestParam("id") String itemId) {
+        return biddingService.resetItemState(itemId, BidState.NEW);
     }
 }

@@ -2,6 +2,7 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-md-10 mx-auto">
+                <h2 class="post-title">Bid</h2>
                 <form id="bidNewPrice">
                     <div class="control-group">
                         <div class="form-group floating-label-form-group controls">
