@@ -32,20 +32,16 @@ public class BiddingServiceImpl implements BiddingService {
 
         currentItem.setCurrentBidPrice(price);
         currentItem.setState(BidState.BIDDING.name());
-        return Mono.create(sink -> {
-            biddingQueue.queueBiddingItem(currentItem);
-            sink.success(currentItem);
-        });
+        biddingQueue.queueBiddingItem(currentItem);
+        return Mono.just(currentItem);
     }
 
     @Override
     public Mono<BiddingItem> updateItemState(String id, BidState newState) {
         BiddingItem currentItem = getBiddingItem(id);
         currentItem.setState(newState.name());
-        return Mono.create(sink -> {
-            biddingQueue.queueBiddingItem(currentItem);
-            sink.success(currentItem);
-        });
+        biddingQueue.queueBiddingItem(currentItem);
+        return Mono.just(currentItem);
     }
 
     @Override
@@ -56,10 +52,8 @@ public class BiddingServiceImpl implements BiddingService {
         }
 
         currentItem.setCurrentBidPrice(newPrice);
-        return Mono.create(sink -> {
-            biddingQueue.queueBiddingItem(currentItem);
-            sink.success(currentItem);
-        });
+        biddingQueue.queueBiddingItem(currentItem);
+        return Mono.just(currentItem);
     }
 
     @Override
