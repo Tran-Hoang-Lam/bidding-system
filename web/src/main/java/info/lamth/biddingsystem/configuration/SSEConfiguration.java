@@ -1,6 +1,5 @@
 package info.lamth.biddingsystem.configuration;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import info.lamth.biddingsystem.event.BiddingItemPriceEvent;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,18 +10,17 @@ import reactor.core.publisher.Flux;
 @Configuration
 public class SSEConfiguration {
     @Bean
-    public Flux<BiddingItemPriceEvent> biddingItemStream(SubscribableChannel newBiddingPrice, ObjectMapper objectMapper) {
-        return getItemPriceFlux(newBiddingPrice, objectMapper).share();
+    public Flux<BiddingItemPriceEvent> biddingItemStream(SubscribableChannel newBiddingPrice) {
+        return getItemPriceFlux(newBiddingPrice).share();
     }
 
     /**
-     * Convert item from channel to json
+     * A flux contain bidding item event
      *
      * @param newBiddingPrice channel
-     * @param objectMapper    jackson converter
-     * @return a Flux contains json of new bidding item
+     * @return a Flux contains new bidding item
      */
-    private Flux<BiddingItemPriceEvent> getItemPriceFlux(SubscribableChannel newBiddingPrice, ObjectMapper objectMapper) {
+    private Flux<BiddingItemPriceEvent> getItemPriceFlux(SubscribableChannel newBiddingPrice) {
         return Flux.create(sink -> {
             MessageHandler handler = message -> {
                 BiddingItemPriceEvent event = (BiddingItemPriceEvent) message.getPayload();
