@@ -19,7 +19,7 @@ class BiddingSimulation extends Simulation {
       exec(Bidding.bid("item2"))
     }
 
-  val steps: RampInjection = rampUsers(1000) over (1 minutes)
+  val steps: RampInjection = rampUsers(500) over (1 minutes)
 
   private def env = http
     .baseURL("http://localhost:8080/api/v1")
