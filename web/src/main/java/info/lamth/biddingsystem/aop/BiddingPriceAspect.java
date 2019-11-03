@@ -8,7 +8,6 @@ import org.aspectj.lang.annotation.Aspect;
 import org.springframework.messaging.SubscribableChannel;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Component;
-import reactor.core.publisher.Mono;
 
 @Component
 @Aspect
@@ -20,20 +19,17 @@ public class BiddingPriceAspect {
         this.newBiddingPrice = newBiddingPrice;
     }
 
-    @AfterReturning(value = "execution(* info.lamth.biddingsystem.service.BiddingServiceImpl.bidPrice(..))" +
-            " || execution(* info.lamth.biddingsystem.service.BiddingServiceImpl.createBiddingItem(..))", returning = "newItem")
-    public void fireNewBiddingEvent(Mono<BiddingItem> newItem) {
-        newItem.subscribe(item -> {
-            log.info("Send item " + item.getName() + " to stream");
-            newBiddingPrice.send(MessageBuilder.withPayload(
-                    BiddingItemPriceEvent.builder()
-                            .id(item.getId())
-                            .name(item.getName())
-                            .description(item.getDescription())
-                            .currentBidPrice(item.getCurrentBidPrice())
-                            .initialPrice(item.getInitialPrice())
-                            .build()
-            ).build());
-        });
+    @AfterReturning(value = "execution(* info.lamth.biddingsystem.repository.BiddingItemRepository.save(..))", returning = "newItem")
+    public void fireNewBiddingEvent(BiddingItem newItem) {
+        log.info("Send item " + newItem.getName() + " to stream");
+        newBiddingPrice.send(MessageBuilder.withPayload(
+                BiddingItemPriceEvent.builder()
+                        .id(newItem.getId())
+                        .name(newItem.getName())
+                        .description(newItem.getDescription())
+                        .currentBidPrice(newItem.getCurrentBidPrice())
+                        .initialPrice(newItem.getInitialPrice())
+                        .build()
+        ).build());
     }
 }
