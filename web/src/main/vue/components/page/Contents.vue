@@ -9,7 +9,7 @@
                     </router-link>
                     <router-link to="/auctioneer">
                         <h2 class="post-title">Auctioneer Page</h2>
-                        <h3 class="post-subtitle">Can add item and change initial price</h3>
+                        <h3 class="post-subtitle">Can add item and change bid price</h3>
                     </router-link>
                 </div>
                 <hr>
