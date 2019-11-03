@@ -16,6 +16,7 @@ configurations {
     }
 }
 
+yarn_build.dependsOn(yarn_install)
 compileJava.dependsOn(yarn_build)
 
 dependencies {
