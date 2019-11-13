@@ -10,12 +10,12 @@ import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executor;
-import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.LinkedBlockingQueue;
 
 @Component
 @Log4j2
 public class BiddingQueue {
-    private static final BlockingQueue<BiddingItem> BIDDING_ITEM_BLOCKING_QUEUE = new LinkedBlockingDeque<>();
+    private static final BlockingQueue<BiddingItem> BIDDING_ITEM_BLOCKING_QUEUE = new LinkedBlockingQueue<>();
     private static final ConcurrentHashMap<String, BiddingItem> BIDDING_ITEM_CONCURRENT_HASH_MAP = new ConcurrentHashMap<>();
 
     private final BiddingItemRepository biddingItemRepository;
