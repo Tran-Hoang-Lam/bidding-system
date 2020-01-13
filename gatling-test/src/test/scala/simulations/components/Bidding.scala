@@ -21,8 +21,8 @@ object Bidding {
         http(s"Bid ${id}")
           .post("/api/v1/bidding-item/bid")
           .header("Content-Type", "application/x-www-form-urlencoded")
-          .formParam("id", "${id}")
-          .formParam("price", "${bidPrice}")
+          .queryParam("id", "${id}")
+          .queryParam("price", "${bidPrice}")
       )
       .pause(1)
   }
