@@ -19,7 +19,7 @@ object Bidding {
     feed(feeder(id))
       .exec(
         http(s"Bid ${id}")
-          .post("/bidding-item/bid")
+          .post("/api/v1/bidding-item/bid")
           .header("Content-Type", "application/x-www-form-urlencoded")
           .formParam("id", "${id}")
           .formParam("price", "${bidPrice}")
