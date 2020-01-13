@@ -17,7 +17,13 @@ object Bidding {
 
   def bid(id: String): ChainBuilder = {
     feed(feeder(id))
-      .exec(http(s"Bid ${id}").post("/bidding-item/bid?id=${id}&price=${bidPrice}"))
+      .exec(
+        http(s"Bid ${id}")
+          .post("/bidding-item/bid")
+          .header("Content-Type", "application/x-www-form-urlencoded")
+          .formParam("id", "${id}")
+          .formParam("price", "${bidPrice}")
+      )
       .pause(1)
   }
 }
