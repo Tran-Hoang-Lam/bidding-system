@@ -6,6 +6,7 @@ import io.gatling.http.Predef._
 
 object Bidding {
   var initialBidPrice = 90000
+
   private def increasePrice(): Int = {
     initialBidPrice += 10000
     initialBidPrice
@@ -13,7 +14,7 @@ object Bidding {
 
   private def getBidPrice(id: String) = Map("bidPrice" -> increasePrice(), "id" -> id)
 
-  private def feeder(id:String): Iterator[Map[String, Any]] = Iterator.continually(getBidPrice(id))
+  private def feeder(id: String): Iterator[Map[String, Any]] = Iterator.continually(getBidPrice(id))
 
   def bid(id: String): ChainBuilder = {
     feed(feeder(id))
@@ -23,6 +24,7 @@ object Bidding {
           .header("Content-Type", "application/x-www-form-urlencoded")
           .queryParam("id", "${id}")
           .queryParam("price", "${bidPrice}")
+          .check(status.not(404), status.not(500))
       )
       .pause(1)
   }
