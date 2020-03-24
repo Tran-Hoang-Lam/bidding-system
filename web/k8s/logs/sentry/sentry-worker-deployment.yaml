@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sentry-worker
+  labels:
+    app: sentry-worker
+  namespace: logs
+spec:
+  selector:
+    matchLabels:
+      app: sentry-worker
+  replicas: 1
+
+  template:
+    metadata:
+      labels:
+        app: sentry-worker
+        k8s-app: sentry-worker
+    spec:
+      containers:
+        - name: sentry-worker
+          image: library/sentry:9.1.2
+          args:
+            - "run"
+            - "worker"
+          ports:
+            - containerPort: 9000
+          volumeMounts:
+            - mountPath: /etc/sentry
+              name: config
+              readOnly: true
+          env:
+            - name: SENTRY_SECRET_KEY
+              value: "flayvpz0lx0(90u#*9ax55sdjd#@oq0np5kdyep5c1l7ierf0k"
+            - name: SENTRY_DB_USER
+              value: sentry
+            - name: SENTRY_DB_NAME
+              value: sentry
+            - name: SENTRY_DB_PASSWORD
+              value: secret
+            - name: SENTRY_POSTGRES_HOST
+              value: "postgres.database"
+            - name: SENTRY_POSTGRES_PORT
+              value: "5432"
+            - name: SENTRY_REDIS_HOST
+              value: "redis.database"
+            - name: SENTRY_REDIS_PORT
+              value: "6379"
+      volumes:
+        - name: config
+          configMap:
+            name: sentry-configmap
+---

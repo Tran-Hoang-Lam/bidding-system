@@ -1,0 +1,115 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sentry-web
+  labels:
+    app: sentry-web
+  namespace: logs
+spec:
+  selector:
+    matchLabels:
+      app: sentry-web
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: sentry-web
+        k8s-app: sentry-web
+    spec:
+      initContainers:
+        - name: upgrade-db
+          image: library/sentry:9.1.2
+          command: ["sentry","upgrade","--noinput"]
+          resources:
+            limits:
+              memory: "3000Mi"
+          volumeMounts:
+            - mountPath: /etc/sentry
+              name: config
+              readOnly: true
+          env:
+            - name: SENTRY_SECRET_KEY
+              value: "flayvpz0lx0(90u#*9ax55sdjd#@oq0np5kdyep5c1l7ierf0k"
+            - name: SENTRY_DB_USER
+              value: sentry
+            - name: SENTRY_DB_NAME
+              value: sentry
+            - name: SENTRY_DB_PASSWORD
+              value: secret
+            - name: SENTRY_POSTGRES_HOST
+              value: "postgres.database"
+            - name: SENTRY_POSTGRES_PORT
+              value: "5432"
+            - name: SENTRY_REDIS_HOST
+              value: "redis.database"
+        - name: init-user
+          image: library/sentry:9.1.2
+          command: ["/bin/bash"]
+          args: ["-c", "export output=$(sentry createuser --no-input --email hoang_lam_33@yahoo.com --superuser --password secret) || if echo $output | grep -q 'already exists'; then exit 0; else exit 1; fi"]
+          volumeMounts:
+            - mountPath: /etc/sentry
+              name: config
+              readOnly: true
+          env:
+            - name: SENTRY_SECRET_KEY
+              value: "flayvpz0lx0(90u#*9ax55sdjd#@oq0np5kdyep5c1l7ierf0k"
+            - name: SENTRY_DB_USER
+              value: sentry
+            - name: SENTRY_DB_NAME
+              value: sentry
+            - name: SENTRY_DB_PASSWORD
+              value: secret
+            - name: SENTRY_POSTGRES_HOST
+              value: "postgres.database"
+            - name: SENTRY_POSTGRES_PORT
+              value: "5432"
+            - name: SENTRY_REDIS_HOST
+              value: "redis.database"
+      containers:
+        - name: sentry-web
+          image: library/sentry:9.1.2
+          ports:
+            - containerPort: 9000
+          volumeMounts:
+            - mountPath: /etc/sentry
+              name: config
+              readOnly: true
+          env:
+            - name: SENTRY_SECRET_KEY
+              value: "flayvpz0lx0(90u#*9ax55sdjd#@oq0np5kdyep5c1l7ierf0k"
+            - name: SENTRY_DB_USER
+              value: sentry
+            - name: SENTRY_DB_NAME
+              value: sentry
+            - name: SENTRY_DB_PASSWORD
+              value: secret
+            - name: SENTRY_POSTGRES_HOST
+              value: "postgres.database"
+            - name: SENTRY_POSTGRES_PORT
+              value: "5432"
+            - name: SENTRY_REDIS_HOST
+              value: "redis.database"
+            - name: SENTRY_REDIS_PORT
+              value: "6379"
+      volumes:
+        - name: config
+          configMap:
+            name: sentry-configmap
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    kubernetes.io/name: sentry-web
+  name: sentry-web
+  namespace: logs
+spec:
+  ports:
+    - port: 9000
+      name: web
+      nodePort: 30020
+  type: NodePort
+  selector:
+    k8s-app: sentry-web
+---
