@@ -7,9 +7,10 @@ metadata:
     app: kibana
 spec:
   ports:
-  - nodePort: 30030
+  - nodePort: 30050
     port: 5601
     name: web
+  type: NodePort
   selector:
     app: kibana
 ---

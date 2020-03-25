@@ -31,6 +31,20 @@ spec:
         env:
           - name: ES_JAVA_OPTS
             value: "-Xms512m -Xmx512m"
+          - name: cluster.name
+            value: k8s-logs
+          - name: node.name
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+          - name: discovery.seed_hosts
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+          - name: cluster.initial_master_nodes
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
 ---
 apiVersion: v1
 kind: Service
