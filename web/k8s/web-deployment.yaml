@@ -24,9 +24,6 @@ spec:
         - image: lamth2/bidding-web
           name: bidding-web
           imagePullPolicy: Never
-          env:
-            - name: SENTRY_DSN
-              value: https://public:private@host:port/1
           ports:
             - containerPort: 8080
 ---
