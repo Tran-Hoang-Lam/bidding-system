@@ -24,6 +24,8 @@ spec:
         - image: lamth2/bidding-web
           name: bidding-web
           imagePullPolicy: Never
+          args:
+            - '--spring.profiles.active=k8s'
           ports:
             - containerPort: 8080
 ---
